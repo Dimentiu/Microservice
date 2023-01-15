@@ -21,8 +21,9 @@ def order_create(request):
                                          quantity=item['quantity'])
             messages.add_message(request, messages.SUCCESS, 'Order was created successfully!')
             text = f'Order {order.pk} was created by {order.owner}'
+            text1 = f'Your order {order.pk} was created successfully!'
             send_mail_to_admin.delay(text, order.email)
-            send_mail_to_owner.delay(order.id)
+            send_mail_to_owner.delay(text1, order.email)
             cart.clear()
             return render(request, 'orders/created.html',
                           {'order': order})
