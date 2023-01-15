@@ -50,4 +50,6 @@ class BookInstance(models.Model):
     status = models.CharField('Status', choices=CHOICE_STATUS, max_length=30, default=IN_PROGRESS)
 
     def __str__(self):
+
         return f'{self.isbn} + {self.status}'
+
