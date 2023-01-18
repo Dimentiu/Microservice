@@ -26,3 +26,4 @@ class BookAdmin(admin.ModelAdmin):
 class BookItemAdmin(admin.ModelAdmin):
     fields = ["title", "isbn", "date_of_order"]
     list_filter = ["isbn"]
+    
