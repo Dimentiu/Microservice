@@ -13,16 +13,15 @@ def contact_us(subject, message, from_email):
 def store_update():
     print('Starting update from warehouse api for database')
     print('Getting data from api...')
-    url = 'http://warehouse:8001/authors/'
+    url = 'http://warehouse:8000/authors/'
     print('Clearing data...')
-
     response_author = requests.get(url)
     if response_author.status_code != 200:
         return
     response_data_author = response_author.json()
-    while 1:
+    while True:
         for counter, data in enumerate(response_data_author['results']):
-            Author.objects.get_or_create(
+            Author.objects.update_or_create(
                 id=data['id'],
                 defaults={
                     'id': data['id'],
@@ -38,17 +37,15 @@ def store_update():
         else:
             break
 
-    url = 'http://warehouse:8001/books/'
+    url = 'http://warehouse:8000/books/'
     print('Clearing data...')
-
     response_book = requests.get(url)
     if response_book.status_code != 200:
         return
     response_data_book = response_book.json()
     while True:
-
         for counter, data in enumerate(response_data_book['results']):
-            book, created = Book.objects.get_or_create(
+            book, created = Book.objects.update_or_create(
                 id=data['id'],
                 defaults={
                     'id': data['id'],
@@ -69,7 +66,6 @@ def store_update():
                 book.rating = data['rating']
                 book.author = Author.objects.get(id=data['author'])
                 book.save()
-
         if response_data_book['next']:
             response_data_book = requests.get(response_data_book['next']).json()
         else:
